@@ -1,65 +1,147 @@
-{
-    "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar at the bottom of your screen
-    "height": 24, // Waybar height
-    // "width": 1366, // Waybar width
+[{
+    "output": "eDP-1",
+     "layer": "top", // Waybar at top layer
+    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 20, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 5, // Gaps between modules (4px)
+    "margin-left": 5,
+    "margin-right": 5,
+    "margin-bottom": 0,
+    "margin-top": 5,
     // Choose the order of the modules
-    "modules-left": ["hyprland/window", "hyprland/mode", "custom/spotify"],
+    "modules-left": ["hyprland/window","custom/spotify", "custom/youtube"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["pulseaudio","cpu", "memory", "battery", "tray", "clock","custom/wlogout"],
+    "modules-right": ["tray", "pulseaudio#out", "pulseaudio#in", "clock", "clock#time","custom/wlogout"],
+    // Modules configuration
+    // "sway/workspaces": {
+    //     "disable-scroll": true,
+    //     "all-outputs": true,
+    //     "warp-on-scroll": false,
+    //     "format": "{name}: {icon}",
+    //     "format-icons": {
+    //         "1": "",
+    //         "2": "",
+    //         "3": "",
+    //         "4": "",
+    //         "5": "",
+    //         "urgent": "",
+    //         "focused": "",
+    //         "default": ""
+    //     }
+    // },
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": false,
         "format": "{icon}",
         "on-scroll-up": "hyprctl dispatch workspace e+1",
-        "on-scroll-down": "hyprctl dispatch workspace e-1"
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "persistent_workspaces": {
+            "*": 2,
         },
-    "hyprland/mode": {
-        "format": "<span style=\"italic\">{}</span>"
     },
     "tray": {
+        "show-passive-items": true,
         // "icon-size": 21,
         "spacing": 10
     },
     "clock": {
-        "format-alt": "{:%Y-%m-%d}"
+        "interval": 600,
+        // "timezone": "America/New_York",
+        "format": "  {:%A, %B %d %Y}",
     },
-    "cpu": {
-        "format": "{usage}% "
+    "clock#time": {
+        "interval": 1,
+        // "timezone": "America/New_York",
+        "format": "  {:%H:%M:%S}",
     },
-    "memory": {
-        "format": "{}% "
-    },
-    "battery": {
-         "devices": [
-      "BAT0", // First battery device
-      "BAT1"   // Second battery device
-        ],
-        "states": {
-            // "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{capacity}% {icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
-    },
-    "pulseaudio": {
-        //"scroll-step": 1,
-        "format": "{volume}% {icon}",
+    "pulseaudio#out": {
+        // "scroll-step": 1, // %, can be a fcoat
+        "format": "{icon} {volume}%",
         "format-bluetooth": "{volume}% {icon}",
-        "format-muted": "",
+        "format-bluetooth-muted": "  Muted",
+        "format-muted": "  Muted",
         "format-icons": {
-            "headphones": "",
-            "handsfree": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", ""]
+            "headphone": " ",
+            "hands-free": "HF  ",
+            "headset": " ",
+            "phone": " ",
+            "portable": " ",
+            "car": "  ",
+            "default": [" ", " ", " "]
         },
         "on-click": "pavucontrol"
+    },
+    "pulseaudio#in": {
+        // "scroll-step": 1, // %, can be a fcoat
+        "format": "{format_source}",
+        "format-bluetooth": "{format_source}",
+        "format-bluetooth-muted": "{format_source}",
+        "format-muted": "{format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": " ",
+        "on-click": "pavucontrol"
+    },
+    "custom/spotify": {
+        "format": "{}",
+        "max-length": 40,
+        "interval": 1, // Remove this if your script is endless and write in loop
+        "exec": "$HOME/.config/waybar/mediaplayer.sh 2> /dev/null", // Script in resources folder
+        "exec-if": "pgrep spotify"
+    },
+    "custom/youtube": {
+        "format": " {}",
+        "max-length": 40,
+        "interval": 1, // Remove this if your script is endless and write in loop
+        "exec": "$HOME/.config/waybar/mediaplayer.sh 2> /dev/null", // Script in resources folder
+        "exec-if": "playerctl -l 2>/dev/null | grep -q firefox"
+    },
+    "custom/wlogout": {
+	    "format": "󰐥",
+        "on-click": "wlogout",
+        "interval" : 86400, // once every day
+        "tooltip": true
+    }
+},
+{
+    "output": "eDP-1",
+    // "layer": "top", // Waybar at top layer
+    "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 20, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 5, // Gaps between modules (4px)
+    "margin-left": 5,
+    "margin-right": 5,
+    "margin-top": 0,
+    "margin-bottom": 5,
+    // Choose the order of the modules
+    "modules-left": ["network", "backlight"],
+    "modules-center": [],
+    "modules-right": ["battery#internal", "battery#external","temperature#cpu", "cpu", "memory", "power-profiles-daemon"],
+    // Modules configuration
+    // "sway/workspaces": {
+    //     "disable-scroll": true,
+    //     "all-outputs": true,
+    //     "warp-on-scroll": false,
+    //     "format": "{name}: {icon}",
+    //     "format-icons": {
+    //         "1": "",
+    //         "2": "",
+    //         "3": "",
+    //         "4": "",
+    //         "5": "",
+    //         "urgent": "",
+    //         "focused": "",
+    //         "default": ""
+    //     }
+    // },
+    "backlight": {
+	"format": " {percent}%"
+    },
+    "custom/fanspeed": {
+        "exec": "/home/ezntek/.config/waybar/fanspeed",
+        "interval": "1",
+        "format": " {} RPM"
     },
     "custom/spotify": {
         "format": " {}",
@@ -69,10 +151,64 @@
         "exec-if": "pgrep spotify"
     },
     "custom/wlogout": {
-	"format": "{}",
-        "exec": "echo ; echo  logout",
+	    "format": "{}",
+        "exec": "echo  logout",
         "on-click": "wlogout",
         "interval" : 86400, // once every day
         "tooltip": true
-    }
-}
+    },
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 10
+    },
+    "cpu": {
+        "interval": 1,
+        "format": "CPU  {usage}% ({avg_frequency} GHz)",
+        "tooltip": false
+    },
+    "memory": {
+        "interval": 1,
+        "format": "RAM {}%"
+    },
+    "battery#external": {
+        "bat": "BAT0",
+	"interval": 1,
+	"format-time": "{H}h{m}m",
+	"format": "  int {capacity}% ({time})",
+        "states": {
+            "warning": 20,
+            "critical": 10,
+        },
+    },
+    "battery#internal": {
+        "bat": "BAT1",
+	"interval": 1,
+	"format-time": "{H}h{m}m",
+	"format": "  ext {capacity}% ({time})",
+        "states": {
+            "warning": 20,
+            "critical": 10,
+        },
+    },
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "  {essid} ({signalStrength}%)",
+        "format-ethernet": "  {ipaddr}/{cidr}",
+        "tooltip-format": "  {ifname} via {gwaddr}",
+        "format-linked": "  {ifname} (No IP)",
+        "format-disconnected": "⚠ Disconnected",
+        "on-click": "nm-connection-editor",
+        //"format-alt": "{ifname}: {ipaddr}/{cidr}"
+    },
+    "power-profiles-daemon": {
+        "format": "{icon}  {profile}",
+        "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+        "tooltip": "true",
+        "format-icons": {
+          "default": "",
+          "performance": "",
+          "balanced": "",
+          "power-saver": ""
+        }
+    },
+}]
