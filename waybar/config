@@ -126,6 +126,10 @@
 	"format": " {percent}%"
     },
 
+    "temperature#cpu":{
+        "interval": 1
+    },
+
     "cpu": {
         "interval": 1,
         "format": "CPU  {usage}% ({avg_frequency} GHz)",
