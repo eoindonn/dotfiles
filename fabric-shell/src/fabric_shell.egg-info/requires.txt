@@ -1,0 +1,3 @@
+dbus-next>=0.2.3
+fabric
+psutil>=7.2.2
